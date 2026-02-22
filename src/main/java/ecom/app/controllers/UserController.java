@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class  UserController {
 
     private final UserService userService;
 
@@ -37,15 +37,14 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@RequestBody User user, @PathVariable Long id){
         return userService.modifyUserInfo(user, id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/user/{id}C")
+    /*@DeleteMapping("/user/{id}C")
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
         return userService.removeExistingUser(id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
 
-    }
+    }*/
 }

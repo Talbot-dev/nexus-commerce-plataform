@@ -42,11 +42,11 @@ public class UserService {
                 }).orElse(false);
     }
 
-    public boolean removeExistingUser(Long id) {
+    /*public boolean removeExistingUser(Long id) {
         return listOfRegisteredUsers.stream()
                 .filter(user -> user.getId().equals(id))
                 .findFirst()
                 .m
 
-    }
+    }*/
 }
