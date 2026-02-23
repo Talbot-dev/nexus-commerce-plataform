@@ -12,15 +12,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class  UserController {
-
     private final UserService userService;
-
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<String> createUserResource(@RequestBody User user){
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.OK);
     }
-
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> fetchAllUsers(){
@@ -41,10 +38,4 @@ public class  UserController {
     public ResponseEntity<String> updateUser(@RequestBody User user, @PathVariable Long id){
         return userService.modifyUserInfo(user, id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
-
-    /*@DeleteMapping("/user/{id}C")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id){
-        return userService.removeExistingUser(id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-
-    }*/
 }
