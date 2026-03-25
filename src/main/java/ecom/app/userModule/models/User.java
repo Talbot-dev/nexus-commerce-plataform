@@ -1,4 +1,4 @@
-package ecom.app.models;
+package ecom.app.userModule.models;
 
 import jakarta.persistence.*;
 
@@ -20,7 +20,6 @@ public class User {
     private String lastName;
     private String email;
     private String phone;
-    private UserRole userRole = UserRole.CUSTOMER;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "address_id", referencedColumnName = "id")

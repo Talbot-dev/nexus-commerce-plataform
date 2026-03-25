@@ -1,4 +1,4 @@
-package ecom.app.models;
+package ecom.app.userModule.models;
 
 import jakarta.persistence.*;
 import lombok.Data;

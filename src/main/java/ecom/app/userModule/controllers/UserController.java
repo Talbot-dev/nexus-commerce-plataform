@@ -1,8 +1,9 @@
-package ecom.app.controllers;
+package ecom.app.userModule.controllers;
 
-import ecom.app.models.User;
-import ecom.app.services.UserService;
+import ecom.app.userModule.models.User;
+import ecom.app.userModule.services.UserService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
