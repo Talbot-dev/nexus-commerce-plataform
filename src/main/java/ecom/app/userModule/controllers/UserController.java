@@ -1,6 +1,7 @@
 package ecom.app.userModule.controllers;
 
-import ecom.app.userModule.models.User;
+import ecom.app.userModule.dtos.UserRequestDTO;
+import ecom.app.userModule.dtos.UserResponseDTO;
 import ecom.app.userModule.services.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,12 +17,12 @@ public class  UserController {
     private final UserService userService;
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<String> createUserResource(@RequestBody User user){
+    public ResponseEntity<String> createUserResource(@RequestBody UserRequestDTO user){
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.OK);
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> fetchAllUsers(){
+    @RequestMapping(value="/users", method = RequestMethod.GET)
+    public ResponseEntity<List<UserResponseDTO>> fetchAllUsers(){
         if (userService.getAllUsers().isEmpty()) {
             return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.NOT_FOUND);
         }
@@ -29,14 +30,14 @@ public class  UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> findUser(@PathVariable Long id){
+    public ResponseEntity<UserResponseDTO> findUser(@PathVariable Long id){
         return userService.getSingleUser(id)
                 .map(ResponseEntity :: ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<String> updateUser(@RequestBody User user, @PathVariable Long id){
-        return userService.modifyUserInfo(user, id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<String> updateUser(@RequestBody UserRequestDTO updatedUser, @PathVariable Long id){
+        return userService.modifyUserInfo(updatedUser, id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

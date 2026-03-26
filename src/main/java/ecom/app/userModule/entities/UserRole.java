@@ -1,4 +1,4 @@
-package ecom.app.userModule.models;
+package ecom.app.userModule.entities;
 
 public enum UserRole {
     CUSTOMER, ADMIN
