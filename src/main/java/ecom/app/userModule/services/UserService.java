@@ -3,9 +3,9 @@ package ecom.app.userModule.services;
 import ecom.app.userModule.dtos.AddressResponseDTO;
 import ecom.app.userModule.dtos.UserRequestDTO;
 import ecom.app.userModule.dtos.UserResponseDTO;
+import ecom.app.userModule.entities.Address;
 import ecom.app.userModule.entities.User;
 import ecom.app.userModule.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +13,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
     private final UserRepository accessToDatabase;
+
+    public UserService(UserRepository accessToDatabase){
+        this.accessToDatabase = accessToDatabase;
+    }
 
     public List<UserResponseDTO> getAllUsers() {
         return accessToDatabase.findAll().stream()
@@ -27,10 +30,10 @@ public class UserService {
         return accessToDatabase.findById(id).map(this::mapToUserResponseDTO);
     }
 
-    public String registerUser(UserRequestDTO user){
-        accessToDatabase.save(user);
-        //Missing the converting data method
-        return "Usuario Exitosamente registrado";
+    public String registerUser(UserRequestDTO userRequestDTO) {
+        User user = new User();
+        accessToDatabase.save(createUserFromRequestDTO(userRequestDTO ,user));
+        return "User successfully added";
     }
 
     public boolean modifyUserInfo(UserRequestDTO userInfoAdded, Long id) {
@@ -42,6 +45,23 @@ public class UserService {
                     return true;
                 }).orElse(false);
         }
+
+    private User createUserFromRequestDTO(UserRequestDTO dto, User user) {
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPhone(dto.getPhone());
+        if(dto.getAddress() != null){
+            Address address = new Address();
+            address.setStreet(dto.getAddress().getStreet());
+            address.setZipcode(dto.getAddress().getZipcode());
+            address.setCity(dto.getAddress().getCity());
+            address.setState(dto.getAddress().getState());
+            address.setCountry(dto.getAddress().getCountry());
+            user.setAddress(address);
+        }
+        return user;
+    }
 
     private UserResponseDTO mapToUserResponseDTO (User user) {
         UserResponseDTO outputData = new UserResponseDTO();
