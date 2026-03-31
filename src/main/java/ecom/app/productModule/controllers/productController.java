@@ -5,12 +5,10 @@ import ecom.app.productModule.dtos.ProductResponseDTO;
 import ecom.app.productModule.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/products/")
 public class productController {
 
     private final ProductService productService;
@@ -19,10 +17,13 @@ public class productController {
         this.productService = productService;
     }
 
-    @RequestMapping(value="/product", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO productRequestDTO) {
         return new ResponseEntity<>(productService.createProduct(productRequestDTO), HttpStatus.CREATED);
     }
 
-
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id,  @RequestBody ProductRequestDTO productRequestDTO) {
+        return new ResponseEntity<>(productService.updateExistingProduct(id, productRequestDTO), HttpStatus.CREATED);
+    }
 }
