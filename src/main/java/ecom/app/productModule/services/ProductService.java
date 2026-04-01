@@ -7,29 +7,48 @@ import ecom.app.productModule.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    private final ProductRepository productRepository;
+    private final ProductRepository accessToDatabase;
 
     public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO) {
         Product productCreated = new Product();
-        return convertEntityToResponse(productRepository.save(convertRequestToEntity(productRequestDTO, productCreated)));
+        return convertEntityToResponse(accessToDatabase.save(convertRequestToEntity(productRequestDTO, productCreated)));
     }
 
-
-// Not working
-    public ProductResponseDTO updateExistingProduct(Long id,  ProductRequestDTO productRequestDTO) {
-        productRepository.findById(id).stream()
-                .peek(existingProduct ->{
-                    existingProduct.setName(productRequestDTO.getName());
-                    existingProduct.setDescription(productRequestDTO.getDescription());
-                    existingProduct.setPrice(productRequestDTO.getPrice());
-                    existingProduct.setCategory(productRequestDTO.getCategory());
+    public Optional<ProductResponseDTO> updateExistingProduct(Long id, ProductRequestDTO productRequestDTO) {
+        return accessToDatabase.findById(id)
+                .map(existingProduct ->{
+                    convertRequestToEntity(productRequestDTO, existingProduct);
+                    return convertEntityToResponse(accessToDatabase.save(existingProduct));
                 });
-        return null;
     }
 
+    public List<ProductResponseDTO> getAllProducts() {
+        return accessToDatabase.findByAvailableTrue().stream()
+                .map(this::convertEntityToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public Boolean deactivateProductById(Long id) {
+        return accessToDatabase.findById(id)
+                .map(product -> {
+                    product.setAvailable(false);
+                    accessToDatabase.save(product);
+                    return true;
+                }).orElse(false);
+    }
+
+    public List<ProductResponseDTO> getSingleProduct(String keyword) {
+        return accessToDatabase.findByKeyword(keyword).stream()
+                .map(this::convertEntityToResponse)
+                .collect(Collectors.toList());
+    }
 
     private ProductResponseDTO convertEntityToResponse(Product product) {
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
