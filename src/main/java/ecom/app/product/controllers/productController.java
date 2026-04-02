@@ -1,8 +1,8 @@
-package ecom.app.productModule.controllers;
+package ecom.app.product.controllers;
 
-import ecom.app.productModule.dtos.ProductRequestDTO;
-import ecom.app.productModule.dtos.ProductResponseDTO;
-import ecom.app.productModule.services.ProductService;
+import ecom.app.product.dtos.ProductRequestDTO;
+import ecom.app.product.dtos.ProductResponseDTO;
+import ecom.app.product.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +41,8 @@ public class productController {
         return productService.deactivateProductById(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> fetchProductByName(@RequestParam String name){
+    @GetMapping("/{name}")
+    public ResponseEntity<List<ProductResponseDTO>> fetchProductByName(@PathVariable String name){
         return ResponseEntity.ok(productService.getSingleProduct(name));
     }
 }

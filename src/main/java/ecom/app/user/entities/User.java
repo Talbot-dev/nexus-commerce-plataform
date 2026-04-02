@@ -1,4 +1,4 @@
-package ecom.app.userModule.entities;
+package ecom.app.user.entities;
 
 import jakarta.persistence.*;
 

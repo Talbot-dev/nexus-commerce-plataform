@@ -1,8 +1,8 @@
-package ecom.app.userModule.controllers;
+package ecom.app.user.controllers;
 
-import ecom.app.userModule.dtos.UserRequestDTO;
-import ecom.app.userModule.dtos.UserResponseDTO;
-import ecom.app.userModule.services.UserService;
+import ecom.app.user.dtos.UserRequestDTO;
+import ecom.app.user.dtos.UserResponseDTO;
+import ecom.app.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;

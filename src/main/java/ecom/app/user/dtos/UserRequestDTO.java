@@ -1,4 +1,4 @@
-package ecom.app.userModule.dtos;
+package ecom.app.user.dtos;
 
 import lombok.Data;
 

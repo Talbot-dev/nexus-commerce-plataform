@@ -1,11 +1,11 @@
-package ecom.app.userModule.services;
+package ecom.app.user.services;
 
-import ecom.app.userModule.dtos.AddressResponseDTO;
-import ecom.app.userModule.dtos.UserRequestDTO;
-import ecom.app.userModule.dtos.UserResponseDTO;
-import ecom.app.userModule.entities.Address;
-import ecom.app.userModule.entities.User;
-import ecom.app.userModule.repository.UserRepository;
+import ecom.app.user.dtos.AddressResponseDTO;
+import ecom.app.user.dtos.UserRequestDTO;
+import ecom.app.user.dtos.UserResponseDTO;
+import ecom.app.user.entities.Address;
+import ecom.app.user.entities.User;
+import ecom.app.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

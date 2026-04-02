@@ -1,4 +1,4 @@
-package ecom.app.productModule.dtos;
+package ecom.app.product.dtos;
 
 import lombok.Data;
 
