@@ -3,6 +3,7 @@ package ecom.app.order.entities;
 import ecom.app.order.model.OrderStatus;
 import ecom.app.user.entities.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,6 +17,7 @@ import java.util.List;
 @Data
 @Entity(name = "order_table")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Order {
 
     @Id

@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class OrderController {
+public class  OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/api/order")
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestHeader("X-User-ID")String userId) {
-        return new ResponseEntity<>(orderService.createOrder(userId), HttpStatus.CREATED);
+    @PostMapping("/api/orders")
+    public ResponseEntity<OrderResponseDTO> createOrder(
+            @RequestHeader("X-User-ID")String userId) {
+            return orderService.createOrder(userId)
+                    .map(orderResponseDTO -> new ResponseEntity<>(orderResponseDTO, HttpStatus.CREATED))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }
