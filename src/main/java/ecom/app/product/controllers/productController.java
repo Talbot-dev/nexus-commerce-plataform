@@ -38,9 +38,7 @@ public class productController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deactivateAvailableProduct(@PathVariable Long id){
-        return productService.deactivateProductById(id) ?
-                ResponseEntity.noContent().build() :
-                ResponseEntity.notFound().build();
+        return productService.deactivateProductById(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @GetMapping
