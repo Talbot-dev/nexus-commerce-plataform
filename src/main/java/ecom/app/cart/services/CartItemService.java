@@ -52,6 +52,10 @@ public class CartItemService {
         return true;
     }
 
+    // Pending to implement...
+    public void deleteProductFromCart(String userId, Long productId) {
+    }
+
     /*private CartItemResponseDTO convertEntityToResponse(CartItem entity) {
         CartItemResponseDTO responseDTO = new CartItemResponseDTO();
         responseDTO.setId(String.valueOf(entity.getId()));
@@ -70,4 +74,6 @@ public class CartItemService {
         entity.setQuantity(BigDecimal.valueOf(dto.getQuantity()));
         return entity;
     }
+
+
 }
