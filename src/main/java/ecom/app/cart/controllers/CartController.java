@@ -2,11 +2,14 @@ package ecom.app.cart.controllers;
 
 import ecom.app.cart.dtos.CartItemRequestDTO;
 
+import ecom.app.cart.entities.CartItem;
 import ecom.app.cart.services.CartItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,13 +26,19 @@ public class CartController {
                 ResponseEntity.badRequest().body("User or product not found or product out of stock");
     }
 
-    // pending to update
-    @DeleteMapping("/items/{productId}")
+    @DeleteMapping("/api/cart/items/{productId}")
     public ResponseEntity<Void> removeFromCart(
             @RequestHeader("X-user-ID") String userId,
             @PathVariable Long productId
     ){
-        cartItemService.deleteProductFromCart(userId, productId );
-        return ResponseEntity.ok().build();
+        return cartItemService.deleteProductFromCart(userId, productId ) ?
+                ResponseEntity.noContent().build() :
+                ResponseEntity.notFound().build();
+
+    }
+
+    @GetMapping("/api/cart")
+    public ResponseEntity<List<CartItem>> fetchCartItems(@RequestHeader("X-user-ID") Long userId) {
+        return ResponseEntity.ok(cartItemService.fetchProducts(userId));
     }
 }

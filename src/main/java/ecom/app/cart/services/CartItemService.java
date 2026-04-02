@@ -1,26 +1,34 @@
 package ecom.app.cart.services;
 
 import ecom.app.cart.dtos.CartItemRequestDTO;
-import ecom.app.cart.dtos.CartItemResponseDTO;
 import ecom.app.cart.entities.CartItem;
 import ecom.app.cart.repository.CartItemRepository;
 import ecom.app.product.entities.Product;
-import ecom.app.product.repository.ProductRepository;
 import ecom.app.user.entities.User;
+import ecom.app.product.repository.ProductRepository;
 import ecom.app.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+
+    public List<CartItem> fetchProducts(Long  userId) {
+        return userRepository.findById(userId)
+                .map(cartItemRepository::findByUser)
+                .orElseGet(List::of);
+    }
 
     public boolean registerProductInCart(Long userId, CartItemRequestDTO request) {
         Optional<Product> existingProduct = productRepository.findById(request.getProductId());
@@ -52,28 +60,14 @@ public class CartItemService {
         return true;
     }
 
-    // Pending to implement...
-    public void deleteProductFromCart(String userId, Long productId) {
+    public boolean deleteProductFromCart(String userId, Long productId) {
+        Optional<Product> existingProduct = productRepository.findById(productId);
+        Optional<User> existingUser = userRepository.findById(Long.valueOf(userId));
+
+        if (existingUser.isPresent() && existingProduct.isPresent()) {
+            cartItemRepository.deleteByUserAndProduct(existingUser.get(), existingProduct.get());
+            return true;
+        }
+        return false;
     }
-
-    /*private CartItemResponseDTO convertEntityToResponse(CartItem entity) {
-        CartItemResponseDTO responseDTO = new CartItemResponseDTO();
-        responseDTO.setId(String.valueOf(entity.getId()));
-        responseDTO.setName(entity.getName());
-        responseDTO.setDescription(entity.getDescription());
-        responseDTO.setPrice(entity.getPrice());
-        responseDTO.setStock(entity.getStock());
-        responseDTO.setCategory(entity.getCategory());
-        responseDTO.setImageURL(entity.getImageURL());
-        responseDTO.setAvailable(entity.getAvailable());
-        return responseDTO;
-    }*/
-
-    private CartItem convertRequestToEntity(CartItemRequestDTO dto, CartItem entity) {
-        entity.setId(dto.getProductId());
-        entity.setQuantity(BigDecimal.valueOf(dto.getQuantity()));
-        return entity;
-    }
-
-
 }
