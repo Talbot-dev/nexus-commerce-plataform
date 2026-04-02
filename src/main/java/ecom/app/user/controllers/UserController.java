@@ -16,12 +16,12 @@ import java.util.List;
 public class  UserController {
     private final UserService userService;
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
     public ResponseEntity<String> createUserResource(@RequestBody UserRequestDTO user){
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/users", method = RequestMethod.GET)
+    @RequestMapping(value="/api/users", method = RequestMethod.GET)
     public ResponseEntity<List<UserResponseDTO>> fetchAllUsers(){
         if (userService.getAllUsers().isEmpty()) {
             return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.NOT_FOUND);
@@ -29,14 +29,14 @@ public class  UserController {
        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/api/users/{id}")
     public ResponseEntity<UserResponseDTO> findUser(@PathVariable Long id){
         return userService.getSingleUser(id)
                 .map(ResponseEntity :: ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/api/users/{id}")
     public ResponseEntity<String> updateUser(@RequestBody UserRequestDTO updatedUser, @PathVariable Long id){
         return userService.modifyUserInfo(updatedUser, id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }

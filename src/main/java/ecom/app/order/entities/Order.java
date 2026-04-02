@@ -1,20 +1,23 @@
-package ecom.app.cart.entities;
+package ecom.app.order.entities;
 
-import ecom.app.product.entities.Product;
+import ecom.app.order.model.OrderStatus;
+import ecom.app.user.entities.User;
 import jakarta.persistence.*;
 import lombok.Data;
-import ecom.app.user.entities.User;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "order_table")
 @NoArgsConstructor
-public class CartItem {
+public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,17 +25,17 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    private BigDecimal total;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.PENDING;
 
-    private BigDecimal quantity;
-    private BigDecimal priceAccumulated;
+    @OneToMany(mappedBy = "order",  cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items =  new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
 }
