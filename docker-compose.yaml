@@ -19,7 +19,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: user@domain.com
       PGADMIN_DEFAULT_PASSWORD: password
     ports:
-      - "7654:7654"
+      - "7654:80"
     networks:
         - mynetwork
     volumes:
