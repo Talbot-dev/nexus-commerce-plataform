@@ -1,0 +1,17 @@
+spring:
+    application:
+        name: nexus-commerce-platform
+    datasource:
+        url: jdbc:postgresql://localhost:5432/mydb
+        driverClassName: org.postgresql.Driver
+        username: postgres
+        password: password
+    jpa:
+        database: postgresql
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        defer-datasource-initialization: true
+server:
+    port: 9093
